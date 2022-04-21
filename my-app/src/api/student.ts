@@ -9,11 +9,11 @@ export const getStudentById = (id: number) => {
     return axios.get(`/students/${id}`)
 }
 
-export const createStudent = (data: StudentFormType) => {
+export const createStudent = (data: any) => {
     return axios.post('/students/create', data)
 }
 
-export const updateStudent = (id: number, data: StudentFormType) => {
+export const updateStudent = (id: number, data: any) => {
     return axios.post(`/students/update/${id}`, data)
 }
 

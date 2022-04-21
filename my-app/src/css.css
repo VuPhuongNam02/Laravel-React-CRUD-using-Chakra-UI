@@ -1,0 +1,26 @@
+@keyframes animation-loading {
+    0% {
+        background-position: -468px 0;
+    }
+    100% {
+        background-position: 468px 0;
+    }
+}
+
+.loading-lazy {
+    position: fixed;
+    content: '';
+    top: 0;
+    height: 8px;
+    width: 100%;
+    z-index: 1001;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: animation-loading;
+    animation-timing-function: linear;
+    background: #f6f7f8;
+    background: linear-gradient( to right, teal 8%, #dddddd 18%, #eeeeee 33%);
+    background-size: 800px 104px;
+    height: 4px;
+}
