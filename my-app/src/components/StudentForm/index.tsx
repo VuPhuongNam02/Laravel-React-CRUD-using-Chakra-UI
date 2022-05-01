@@ -11,18 +11,18 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { createStudent } from "../../api/student";
-import { StudentFormType } from "./StudentForm.type";
+import { FormType, StudentFormType } from "./StudentForm.type";
 
-const StudentForm = ({ setIsLoading }: any) => {
+const StudentForm = ({ setIsLoading, handleGetStudents }: StudentFormType) => {
   const [avatar, setAvatar] = React.useState<any>(null);
   const [imgPreveiew, setimgPreveiew] = React.useState<any>(null);
 
   const [errorMessages, setErrorMessages] = React.useState<any>({
     name: "",
-    email: "",
+    avatar: "",
   });
 
-  const { register, handleSubmit, reset } = useForm<StudentFormType>();
+  const { register, handleSubmit, reset } = useForm<FormType>();
 
   //img preview
   const handleImgPreview = (event: any) => {
@@ -61,6 +61,9 @@ const StudentForm = ({ setIsLoading }: any) => {
 
       //setErrorMessages
       setErrorMessages("");
+
+      //call api handleGetStudents after create data
+      handleGetStudents();
     } else if (response.data.status == 402) {
       //fail
       setIsLoading(false);

@@ -1,5 +1,6 @@
+import { StudentType } from "../../api"
+
 export type StudentTableType = {
-    id: number,
-    name: string,
-    avatar: string
+    data: StudentType[]
 }
+
