@@ -1,4 +1,3 @@
-import { StudentFormType } from "../components/StudentForm/StudentForm.type";
 import axios from "./axios";
 
 export const getStudents = () => {

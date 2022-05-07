@@ -11,30 +11,19 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { createStudent } from "../../api/student";
+import UploadImage from "../UploadImage";
 import { FormType, StudentFormType } from "./StudentForm.type";
 
 const StudentForm = ({ setIsLoading, handleGetStudents }: StudentFormType) => {
-  const [avatar, setAvatar] = React.useState<any>(null);
-  const [imgPreveiew, setimgPreveiew] = React.useState<any>(null);
+  const [avatar, setAvatar] = React.useState<any>();
+  const [imgPreveiew, setImgPreveiew] = React.useState<any>();
 
-  const [errorMessages, setErrorMessages] = React.useState<any>({
+  const [errorMessages, setErrorMessages] = React.useState<any | undefined>({
     name: "",
     avatar: "",
   });
 
-  const { register, handleSubmit, reset } = useForm<FormType>();
-
-  //img preview
-  const handleImgPreview = (event: any) => {
-    const fileSelected = event.target.files[0];
-    setAvatar(fileSelected);
-
-    let reader = new FileReader();
-    reader.onloadend = () => {
-      setimgPreveiew(reader.result);
-    };
-    reader.readAsDataURL(fileSelected);
-  };
+  const { register, handleSubmit } = useForm<FormType>();
 
   //submit form
   const submit = async (data: any, event: any) => {
@@ -47,11 +36,11 @@ const StudentForm = ({ setIsLoading, handleGetStudents }: StudentFormType) => {
     const response = await createStudent(formData);
 
     //when response data success
-    if (response.data.status == 200) {
+    if (response.data.status === 200) {
       setIsLoading(false);
 
       //set img preview empty
-      setimgPreveiew("");
+      setImgPreveiew("");
 
       //reset form
       event.target.reset();
@@ -64,7 +53,9 @@ const StudentForm = ({ setIsLoading, handleGetStudents }: StudentFormType) => {
 
       //call api handleGetStudents after create data
       handleGetStudents();
-    } else if (response.data.status == 402) {
+    } else if (response.data.status === 402) {
+      console.log("fail");
+
       //fail
       setIsLoading(false);
       setErrorMessages(response.data.errorMessages);
@@ -81,24 +72,17 @@ const StudentForm = ({ setIsLoading, handleGetStudents }: StudentFormType) => {
             {...register("name")}
             name="name"
           />
-          <FormLabel
-            htmlFor="avatar"
-            textAlign="center"
-            width="300px"
-            p={2}
-            cursor="pointer"
-            borderRadius="lg"
-            background="gray"
-          >
-            Choose file
-          </FormLabel>
-          <Input
-            type="file"
-            {...register("avatar")}
-            onChange={handleImgPreview}
-            name="avatar"
-            id="avatar"
-            hidden
+
+          <UploadImage
+            htmlFor={"avatar"}
+            setAvatar={setAvatar}
+            setImgPreveiew={setImgPreveiew}
+            imgPreveiew={imgPreveiew}
+            inputProps={{
+              name: "avatar",
+              id: "avatar",
+              hidden: true,
+            }}
           />
           <Button background="teal" type="submit">
             Add
@@ -111,7 +95,6 @@ const StudentForm = ({ setIsLoading, handleGetStudents }: StudentFormType) => {
       <Text fontSize="md" color="tomato">
         {errorMessages.avatar}
       </Text>
-      <Image src={imgPreveiew} w="200px" />
     </Box>
   );
 };

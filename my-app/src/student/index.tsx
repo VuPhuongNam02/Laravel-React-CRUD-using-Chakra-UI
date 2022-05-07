@@ -1,16 +1,22 @@
-import { Box, Spinner } from "@chakra-ui/react";
+import { Box, Spinner, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { ToastContainer } from "react-toastify";
 import { StudentType } from "../api";
 import { getStudents } from "../api/student";
 
 import StudentForm from "../components/StudentForm";
+import StudentModal from "../components/StudentModal";
 import StudentTable from "../components/StudentTable";
 
 const Student = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isGetData, setIsGetData] = React.useState<boolean>(false);
   const [students, setStudents] = React.useState<StudentType[]>([]);
+  const [idStudent, setIdStudent] = React.useState<number | undefined>(
+    undefined
+  );
+
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const handleGetStudents = async () => {
     setIsGetData(true);
@@ -34,7 +40,22 @@ const Student = () => {
         handleGetStudents={handleGetStudents}
       />
 
-      {!isGetData ? <StudentTable data={students} /> : <Spinner size="xl" />}
+      <StudentModal
+        isOpen={isOpen}
+        onClose={onClose}
+        idStudent={idStudent}
+        handleGetStudents={handleGetStudents}
+      />
+
+      {!isGetData ? (
+        <StudentTable
+          data={students}
+          onOpen={onOpen}
+          setIdStudent={setIdStudent}
+        />
+      ) : (
+        <Spinner size="xl" />
+      )}
 
       <ToastContainer />
     </Box>

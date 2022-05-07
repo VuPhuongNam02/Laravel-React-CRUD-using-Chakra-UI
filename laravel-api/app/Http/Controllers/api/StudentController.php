@@ -14,13 +14,13 @@ class StudentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:students',
-            'avatar' => 'mimes:jpg,png'
+            'avatar' => 'mimes:jpg,png',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'status' => 402,
-                'errorMessages' => $validator->getMessageBag()
+                'errorMessages' => $validator->getMessageBag(),
             ]);
         } else {
             $student = new Student();
@@ -36,7 +36,7 @@ class StudentController extends Controller
 
             return response()->json([
                 'status' => 200,
-                'message' => 'Create Student Successfully !'
+                'message' => 'Create Student Successfully !',
             ]);
         }
     }
@@ -44,21 +44,43 @@ class StudentController extends Controller
     //read
     public function index()
     {
-        $students  = Student::all();
+        $students = Student::all();
         return response()->json([
             'status' => 200,
-            'students' => $students
+            'students' => $students,
         ]);
     }
 
     //edit
     public function edit($id)
     {
+        $student = Student::find($id);
+        return response()->json([
+            'status' => 200,
+            'student' => $student,
+        ]);
     }
 
     //update
     public function store($id, Request $request)
     {
+        $student = Student::find($id);
+
+        $student->name = $request->input('name');
+        $file = $request->file('avatar');
+
+        if ($file != '') {
+            $avatar = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('/img/'), $avatar);
+            $student->avatar = $avatar;
+        }
+
+        $student->save();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Update Student Successfully !'
+        ]);
     }
 
     //delete
