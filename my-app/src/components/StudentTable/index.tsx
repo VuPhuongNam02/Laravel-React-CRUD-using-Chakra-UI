@@ -12,7 +12,12 @@ import {
 } from "@chakra-ui/react";
 import { StudentTableType } from "./StudentTable.type";
 
-const StudentTable = ({ data, onOpen, setIdStudent }: StudentTableType) => {
+const StudentTable = ({
+  data,
+  onOpen,
+  setIdStudent,
+  handleDeleteStudent,
+}: StudentTableType) => {
   return (
     <TableContainer maxWidth="700px" m="40px auto">
       <Table variant="striped" colorScheme="teal">
@@ -48,7 +53,9 @@ const StudentTable = ({ data, onOpen, setIdStudent }: StudentTableType) => {
                 </Button>
               </Td>
               <Td>
-                <Button>Delete</Button>
+                <Button onClick={() => handleDeleteStudent(item.id)}>
+                  Delete
+                </Button>
               </Td>
             </Tr>
           ))}

@@ -5,5 +5,6 @@ export type StudentTableType = {
     data: StudentType[]
     onOpen: () => void
     setIdStudent: Dispatch<SetStateAction<number | undefined>>
+    handleDeleteStudent: (id: any) => void
 }
 

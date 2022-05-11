@@ -14,7 +14,6 @@ export const App = () => (
         <Logo h="10vmin" pointerEvents="none" />
       </VStack>
       <Student />
-      
     </Box>
   </ChakraProvider>
 );

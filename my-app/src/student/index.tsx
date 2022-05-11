@@ -1,8 +1,8 @@
 import { Box, Spinner, useDisclosure } from "@chakra-ui/react";
 import React from "react";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { StudentType } from "../api";
-import { getStudents } from "../api/student";
+import { deleteStudent, getStudents } from "../api/student";
 
 import StudentForm from "../components/StudentForm";
 import StudentModal from "../components/StudentModal";
@@ -25,6 +25,14 @@ const Student = () => {
     if (res.data.status == 200) {
       setStudents(res.data.students);
       setIsGetData(false);
+    }
+  };
+
+  const handleDeleteStudent = async (id: any) => {
+    const res = await deleteStudent(Number(id));
+    if (res.data.status == 200) {
+      toast.success(res.data.message);
+      handleGetStudents();
     }
   };
 
@@ -52,6 +60,7 @@ const Student = () => {
           data={students}
           onOpen={onOpen}
           setIdStudent={setIdStudent}
+          handleDeleteStudent={handleDeleteStudent}
         />
       ) : (
         <Spinner size="xl" />
